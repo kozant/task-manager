@@ -6,11 +6,11 @@ function App() {
   const [boards, setBoards] = useState<any[]>([
     {
       id: 1,
-      name: "Task Manager",
+      title: "Task Manager",
       columns: [
         {
           id: 1,
-          name: "To Do",
+          title: "To Do",
           cards: [
             {
               id: 1,
@@ -24,8 +24,8 @@ function App() {
             },
           ],
         },
-        { id: 2, name: "In Progress", cards: [] },
-        { id: 3, name: "Done", cards: [] },
+        { id: 2, title: "In Progress", cards: [] },
+        { id: 3, title: "Done", cards: [] },
       ],
     },
   ]);
@@ -33,16 +33,27 @@ function App() {
   const addBoard = useCallback(() => {
     const newBoard = {
       id: Date.now(),
-      name: `Board ${boards.length + 1}`,
+      title: `Board ${boards.length + 1}`,
       columns: [],
     };
     setBoards([...boards, newBoard]);
   }, [boards]);
 
+  const updateBoard = useCallback(
+    (updatedBoard: any) => {
+      setBoards((prevBoards) =>
+        prevBoards.map((board) =>
+          board.id === updatedBoard.id ? updatedBoard : board,
+        ),
+      );
+    },
+    [setBoards],
+  );
+
   return (
     <>
       <Header onAddBoard={addBoard} />
-      <Content boards={boards} />
+      <Content boards={boards} onUpdateBoard={updateBoard} />
     </>
   );
 }

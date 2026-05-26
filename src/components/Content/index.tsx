@@ -1,6 +1,12 @@
 import Board from "../Board";
 
-export default function Content({ boards }: { boards: any[] }) {
+export default function Content({
+  boards,
+  onUpdateBoard,
+}: {
+  boards: any[];
+  onUpdateBoard: (board: any) => void;
+}) {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Task Board</h2>
@@ -10,7 +16,9 @@ export default function Content({ boards }: { boards: any[] }) {
             No boards available. Create a new board to get started!
           </p>
         ) : (
-          boards.map((board) => <Board key={board.id} board={board} />)
+          boards.map((board) => (
+            <Board key={board.id} board={board} onUpdateBoard={onUpdateBoard} />
+          ))
         )}
       </div>
     </div>
