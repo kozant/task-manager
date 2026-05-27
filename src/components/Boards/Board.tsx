@@ -49,6 +49,14 @@ export default function Board({
     [board, onUpdateBoard],
   );
 
+  const handleDeleteColumn = useCallback(
+    (columnId: number) => {
+      const updatedColumns = columns.filter((col) => col.id !== columnId);
+      onUpdateBoard({ ...board, columns: updatedColumns });
+    },
+    [board, columns, onUpdateBoard],
+  );
+
   return (
     <div
       className="p-4 bg-blue-100 rounded-md shadow-md"
@@ -56,7 +64,11 @@ export default function Board({
     >
       <h2 className="text-2xl font-bold mb-4">{board.title}</h2>
       <div className="grid grid-cols-5 gap-4">
-        <ColumnList columns={columns} onUpdateColumn={handleUpdateColumn} />
+        <ColumnList
+          columns={columns}
+          onUpdateColumn={handleUpdateColumn}
+          onDeleteColumn={handleDeleteColumn}
+        />
         {isFormOpen ? (
           <ColumnForm onSubmit={handleAddColumn} onClose={handleCloseAddForm} />
         ) : (

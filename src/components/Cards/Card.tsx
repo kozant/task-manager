@@ -54,7 +54,7 @@ export default function Card({
     />
   ) : (
     <div
-      className="p-4 pr-2 rounded-md bg-white shadow-md border-2 border-white hover:border-blue-500 cursor-pointer"
+      className="pl-4 p-2 rounded-md bg-white shadow-md hover:shadow-lg cursor-pointer"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >

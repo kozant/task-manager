@@ -3,17 +3,30 @@ import CardList from "../Cards";
 import type { Column as ColumnType, Card as CardType } from "../../types/board";
 import CardForm from "../CardForm";
 import type { SubmitHandler } from "react-hook-form";
+import Tooltip from "../common/Tooltip";
+import { Trash } from "lucide-react";
 
 export default function Column({
   column,
   onUpdateColumn,
+  onDeleteColumn,
 }: {
   column: ColumnType;
   onUpdateColumn: (column: ColumnType) => void;
+  onDeleteColumn: (columnId: number) => void;
 }) {
   const { cards } = column;
 
+  const [isHovered, setIsHovered] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const handleOnMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleOnMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
 
   const handleOpenAddForm = useCallback(() => {
     setIsFormOpen(true);
@@ -54,9 +67,33 @@ export default function Column({
     [cards, column, onUpdateColumn],
   );
 
+  const handleDeleteColumn = useCallback(() => {
+    onDeleteColumn(column.id);
+  }, [onDeleteColumn, column.id]);
+
   return (
-    <div className="flex flex-col gap-3 p-2 bg-green-100 rounded-md shadow-sm">
-      <strong>{column.title}</strong>
+    <div
+      className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm cursor-pointer"
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
+    >
+      <div className="pl-4 flex justify-between items-center">
+        <strong>{column.title}</strong>
+        {isHovered ? (
+          <div className="flex">
+            <Tooltip text="Delete Column">
+              <div
+                className="p-2 cursor-pointer hover:bg-green-200 rounded-full"
+                onClick={handleDeleteColumn}
+              >
+                <Trash size={15} color="rgb(80, 82, 88)" />
+              </div>
+            </Tooltip>
+          </div>
+        ) : (
+          <div style={{ height: 31 }} />
+        )}
+      </div>
       <CardList
         cards={cards}
         onEdit={handleEditCard}
@@ -70,7 +107,7 @@ export default function Column({
         />
       ) : (
         <div
-          className="p-2 rounded-md hover:bg-green-200 cursor-pointer"
+          className="pl-4 pr-4 p-2 rounded-md hover:bg-green-200 cursor-pointer"
           onClick={handleOpenAddForm}
         >
           + Add Card
