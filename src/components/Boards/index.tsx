@@ -1,11 +1,12 @@
-import Board from "../Board";
+import Board from "./Board";
+import type { Board as BoardType } from "../../types/board";
 
-export default function Content({
+export default function BoardList({
   boards,
   onUpdateBoard,
 }: {
-  boards: any[];
-  onUpdateBoard: (board: any) => void;
+  boards: BoardType[];
+  onUpdateBoard: (board: BoardType) => void;
 }) {
   return (
     <div className="p-4">
