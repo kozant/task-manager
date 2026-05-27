@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import BoardList from "./components/Boards";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Board } from "./types/board";
 
 const initialBoards: Board[] = [
@@ -31,7 +31,15 @@ const initialBoards: Board[] = [
 ];
 
 function App() {
-  const [boards, setBoards] = useState<Board[]>(initialBoards);
+  const [boards, setBoards] = useState<Board[]>(
+    localStorage.getItem("boards")
+      ? JSON.parse(localStorage.getItem("boards")!)
+      : initialBoards,
+  );
+
+  useEffect(() => {
+    localStorage.setItem("boards", JSON.stringify(boards));
+  }, [boards]);
 
   const addBoard = useCallback(() => {
     const newBoard: Board = {

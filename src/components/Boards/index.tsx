@@ -18,7 +18,9 @@ export default function BoardList({
           </p>
         ) : (
           boards.map((board) => (
-            <Board key={board.id} board={board} onUpdateBoard={onUpdateBoard} />
+            <div key={String(board.id)}>
+              <Board board={board} onUpdateBoard={onUpdateBoard} />
+            </div>
           ))
         )}
       </div>

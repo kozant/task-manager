@@ -12,7 +12,13 @@ export default function CardList({
 }) {
   if (!cards) return null;
 
-  return cards.map((card) => (
-    <Card key={card.id} card={card} onEdit={onEdit} onDelete={onDelete} />
-  ));
+  return (
+    <>
+      {cards.map((card) => (
+        <div key={String(card.id)}>
+          <Card card={card} onEdit={onEdit} onDelete={onDelete} />
+        </div>
+      ))}
+    </>
+  );
 }

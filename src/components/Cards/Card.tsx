@@ -22,10 +22,11 @@ export default function Card({
 
   const handleEdit = useCallback(
     (data: CardType) => {
-      onEdit(card.id, data);
+      const updatedCard: CardType = { ...data, id: card.id };
+      onEdit(card.id, updatedCard);
       setIsFormOpen(false);
     },
-    [onEdit],
+    [onEdit, card.id],
   );
 
   const handleDelete = useCallback(() => {

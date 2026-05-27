@@ -10,7 +10,13 @@ export default function ColumnList({
 }) {
   if (!columns.length) return null;
 
-  return columns.map((column) => (
-    <Column key={column.id} column={column} onUpdateColumn={onUpdateColumn} />
-  ));
+  return (
+    <>
+      {columns.map((column) => (
+        <div key={String(column.id)}>
+          <Column column={column} onUpdateColumn={onUpdateColumn} />
+        </div>
+      ))}
+    </>
+  );
 }
