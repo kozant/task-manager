@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
 import CardList from "../Cards";
-import type { Column as ColumnType } from "../../types/board";
-import AddCard from "./AddCard";
+import type { Column as ColumnType, Card as CardType } from "../../types/board";
+import CardForm from "../CardForm";
+import type { SubmitHandler } from "react-hook-form";
 
 export default function Column({
   column,
@@ -22,14 +23,49 @@ export default function Column({
     setIsFormOpen(false);
   }, []);
 
+  const handleAddCard: SubmitHandler<CardType> = useCallback(
+    (data) => {
+      const newCard: CardType = {
+        id: Date.now(),
+        title: data.title,
+        description: data.description,
+      };
+      onUpdateColumn({ ...column, cards: [...cards, newCard] });
+      handleCloseAddForm();
+    },
+    [column, onUpdateColumn],
+  );
+
+  const handleEditCard = useCallback(
+    (cardId: number, updatedCard: CardType) => {
+      const updatedCards = cards.map((card) =>
+        card.id === cardId ? updatedCard : card,
+      );
+      onUpdateColumn({ ...column, cards: updatedCards });
+    },
+    [column, onUpdateColumn],
+  );
+
+  const handleDeleteCard = useCallback(
+    (cardId: number) => {
+      const updatedCards = cards.filter((card) => card.id !== cardId);
+      onUpdateColumn({ ...column, cards: updatedCards });
+    },
+    [cards, column, onUpdateColumn],
+  );
+
   return (
     <div className="flex flex-col gap-3 p-2 bg-green-100 rounded-md shadow-sm">
       <strong>{column.title}</strong>
-      <CardList cards={cards} />
+      <CardList
+        cards={cards}
+        onEdit={handleEditCard}
+        onDelete={handleDeleteCard}
+      />
       {isFormOpen ? (
-        <AddCard
-          column={column}
-          onUpdateColumn={onUpdateColumn}
+        <CardForm
+          buttonText="Add Card"
+          onSubmit={handleAddCard}
           onClose={handleCloseAddForm}
         />
       ) : (

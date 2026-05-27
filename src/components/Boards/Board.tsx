@@ -3,8 +3,9 @@ import type {
   Board as BoardType,
   Column as ColumnType,
 } from "../../types/board";
+import type { SubmitHandler } from "react-hook-form";
 import ColumnList from "../Columns";
-import AddColumn from "./AddColumn";
+import ColumnForm from "../ColumnForm";
 
 export default function Board({
   board,
@@ -35,6 +36,19 @@ export default function Board({
     [board, onUpdateBoard],
   );
 
+  const handleAddColumn: SubmitHandler<ColumnType> = useCallback(
+    (data) => {
+      const newColumn: ColumnType = {
+        id: Date.now(),
+        title: data.title,
+        cards: [],
+      };
+      onUpdateBoard({ ...board, columns: [...columns, newColumn] });
+      handleCloseAddForm();
+    },
+    [board, onUpdateBoard],
+  );
+
   return (
     <div
       className="p-4 bg-blue-100 rounded-md shadow-md"
@@ -44,11 +58,7 @@ export default function Board({
       <div className="grid grid-cols-5 gap-4">
         <ColumnList columns={columns} onUpdateColumn={handleUpdateColumn} />
         {isFormOpen ? (
-          <AddColumn
-            board={board}
-            onUpdateBoard={onUpdateBoard}
-            onClose={handleCloseAddForm}
-          />
+          <ColumnForm onSubmit={handleAddColumn} onClose={handleCloseAddForm} />
         ) : (
           <div
             className="p-2 rounded-md hover:bg-blue-200 cursor-pointer h-fit"
