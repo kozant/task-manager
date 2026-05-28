@@ -3,10 +3,9 @@ import type { Board as BoardType } from "../../types/board";
 
 type BoardListProps = {
   boards: BoardType[];
-  onUpdateBoard: (board: BoardType) => void;
 };
 
-export default function BoardList({ boards, onUpdateBoard }: BoardListProps) {
+export default function BoardList({ boards }: BoardListProps) {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Task Board</h2>
@@ -18,7 +17,7 @@ export default function BoardList({ boards, onUpdateBoard }: BoardListProps) {
         ) : (
           boards.map((board) => (
             <div key={board.id}>
-              <Board board={board} onUpdateBoard={onUpdateBoard} />
+              <Board board={board} />
             </div>
           ))
         )}

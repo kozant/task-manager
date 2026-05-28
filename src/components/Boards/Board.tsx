@@ -4,15 +4,15 @@ import type {
   Column as ColumnType,
 } from "../../types/board";
 import type { SubmitHandler } from "react-hook-form";
+import { useBoardStore } from "../../store/useBoardStore";
 import ColumnList from "../Columns";
 import ColumnForm from "../ColumnForm";
 
 type BoardProps = {
   board: BoardType;
-  onUpdateBoard: (board: BoardType) => void;
 };
 
-export default function Board({ board, onUpdateBoard }: BoardProps) {
+export default function Board({ board }: BoardProps) {
   const { columns } = board;
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -25,14 +25,16 @@ export default function Board({ board, onUpdateBoard }: BoardProps) {
     setIsFormOpen(false);
   }, []);
 
+  const updateBoard = useBoardStore((state) => state.updateBoard);
+
   const handleUpdateColumn = useCallback(
     (updatedColumn: ColumnType) => {
       const updatedColumns = columns.map((col) =>
         col.id === updatedColumn.id ? updatedColumn : col,
       );
-      onUpdateBoard({ ...board, columns: updatedColumns });
+      updateBoard({ ...board, columns: updatedColumns });
     },
-    [board, onUpdateBoard],
+    [board, columns, updateBoard],
   );
 
   const handleAddColumn: SubmitHandler<ColumnType> = useCallback(
@@ -42,18 +44,18 @@ export default function Board({ board, onUpdateBoard }: BoardProps) {
         title: data.title,
         cards: [],
       };
-      onUpdateBoard({ ...board, columns: [...columns, newColumn] });
+      updateBoard({ ...board, columns: [...columns, newColumn] });
       handleCloseAddForm();
     },
-    [board, onUpdateBoard],
+    [board, columns, updateBoard],
   );
 
   const handleDeleteColumn = useCallback(
     (columnId: number) => {
       const updatedColumns = columns.filter((col) => col.id !== columnId);
-      onUpdateBoard({ ...board, columns: updatedColumns });
+      updateBoard({ ...board, columns: updatedColumns });
     },
-    [board, columns, onUpdateBoard],
+    [board, columns, updateBoard],
   );
 
   return (
