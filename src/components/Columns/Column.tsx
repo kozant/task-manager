@@ -6,15 +6,17 @@ import type { SubmitHandler } from "react-hook-form";
 import Tooltip from "../common/Tooltip";
 import { Trash } from "lucide-react";
 
+type ColumnProps = {
+  column: ColumnType;
+  onUpdateColumn: (column: ColumnType) => void;
+  onDeleteColumn: (columnId: number) => void;
+};
+
 export default function Column({
   column,
   onUpdateColumn,
   onDeleteColumn,
-}: {
-  column: ColumnType;
-  onUpdateColumn: (column: ColumnType) => void;
-  onDeleteColumn: (columnId: number) => void;
-}) {
+}: ColumnProps) {
   const { cards } = column;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -82,12 +84,13 @@ export default function Column({
         {isHovered ? (
           <div className="flex">
             <Tooltip text="Delete Column">
-              <div
+              <button
+                type="button"
                 className="p-2 cursor-pointer hover:bg-green-200 rounded-full"
                 onClick={handleDeleteColumn}
               >
                 <Trash size={15} color="rgb(80, 82, 88)" />
-              </div>
+              </button>
             </Tooltip>
           </div>
         ) : (
@@ -106,12 +109,13 @@ export default function Column({
           onClose={handleCloseAddForm}
         />
       ) : (
-        <div
-          className="pl-4 pr-4 p-2 rounded-md hover:bg-green-200 cursor-pointer"
+        <button
+          type="button"
+          className="pl-4 pr-4 p-2 rounded-md hover:bg-green-200 cursor-pointer text-left"
           onClick={handleOpenAddForm}
         >
           + Add Card
-        </div>
+        </button>
       )}
     </div>
   );

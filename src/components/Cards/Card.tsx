@@ -4,15 +4,13 @@ import type { Card as CardType } from "../../types/board";
 import Tooltip from "../common/Tooltip";
 import CardForm from "../CardForm";
 
-export default function Card({
-  card,
-  onEdit,
-  onDelete,
-}: {
+type CardProps = {
   card: CardType;
   onEdit: (cardId: number, updatedCard: CardType) => void;
   onDelete: (cardId: number) => void;
-}) {
+};
+
+export default function Card({ card, onEdit, onDelete }: CardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -31,7 +29,7 @@ export default function Card({
 
   const handleDelete = useCallback(() => {
     onDelete(card.id);
-  }, [onDelete, card]);
+  }, [onDelete, card.id]);
 
   const handleClose = useCallback(() => {
     setIsFormOpen(false);
@@ -63,20 +61,22 @@ export default function Card({
         {isHovered ? (
           <div className="flex">
             <Tooltip text="Edit Card">
-              <div
+              <button
+                type="button"
                 className="p-2 cursor-pointer hover:bg-gray-200 rounded-full"
                 onClick={handleOpenForm}
               >
                 <SquarePen size={15} color="rgb(80, 82, 88)" />
-              </div>
+              </button>
             </Tooltip>
             <Tooltip text="Delete Card">
-              <div
+              <button
+                type="button"
                 className="p-2 cursor-pointer hover:bg-gray-200 rounded-full"
                 onClick={handleDelete}
               >
                 <Trash size={15} color="rgb(80, 82, 88)" />
-              </div>
+              </button>
             </Tooltip>
           </div>
         ) : (

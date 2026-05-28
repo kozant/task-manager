@@ -7,13 +7,12 @@ import type { SubmitHandler } from "react-hook-form";
 import ColumnList from "../Columns";
 import ColumnForm from "../ColumnForm";
 
-export default function Board({
-  board,
-  onUpdateBoard,
-}: {
+type BoardProps = {
   board: BoardType;
   onUpdateBoard: (board: BoardType) => void;
-}) {
+};
+
+export default function Board({ board, onUpdateBoard }: BoardProps) {
   const { columns } = board;
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -72,12 +71,13 @@ export default function Board({
         {isFormOpen ? (
           <ColumnForm onSubmit={handleAddColumn} onClose={handleCloseAddForm} />
         ) : (
-          <div
-            className="p-2 rounded-md hover:bg-blue-200 cursor-pointer h-fit"
+          <button
+            type="button"
+            className="p-2 rounded-md hover:bg-blue-200 cursor-pointer h-fit text-left"
             onClick={handleOpenAddForm}
           >
             + Add Column
-          </div>
+          </button>
         )}
       </div>
     </div>

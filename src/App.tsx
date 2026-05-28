@@ -1,7 +1,8 @@
 import Header from "./components/Header";
 import BoardList from "./components/Boards";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { Board } from "./types/board";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 const initialBoards: Board[] = [
   {
@@ -31,32 +32,32 @@ const initialBoards: Board[] = [
 ];
 
 function App() {
-  const [boards, setBoards] = useState<Board[]>(
-    localStorage.getItem("boards")
-      ? JSON.parse(localStorage.getItem("boards")!)
-      : initialBoards,
+  const [boards, setBoards] = useLocalStorageState<Board[]>(
+    "boards",
+    initialBoards,
   );
 
-  useEffect(() => {
-    localStorage.setItem("boards", JSON.stringify(boards));
-  }, [boards]);
-
   const addBoard = useCallback(() => {
-    const newBoard: Board = {
-      id: Date.now(),
-      title: `Board ${boards.length + 1}`,
-      columns: [],
-    };
-    setBoards((prevBoards) => [...prevBoards, newBoard]);
-  }, [boards]);
+    setBoards((previousBoards) => [
+      ...previousBoards,
+      {
+        id: Date.now(),
+        title: `Board ${previousBoards.length + 1}`,
+        columns: [],
+      },
+    ]);
+  }, [setBoards]);
 
-  const updateBoard = useCallback((updatedBoard: Board) => {
-    setBoards((prevBoards) =>
-      prevBoards.map((board) =>
-        board.id === updatedBoard.id ? updatedBoard : board,
-      ),
-    );
-  }, []);
+  const updateBoard = useCallback(
+    (updatedBoard: Board) => {
+      setBoards((previousBoards) =>
+        previousBoards.map((board) =>
+          board.id === updatedBoard.id ? updatedBoard : board,
+        ),
+      );
+    },
+    [setBoards],
+  );
 
   return (
     <>

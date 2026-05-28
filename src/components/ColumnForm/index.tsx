@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Column as ColumnType } from "../../types/board";
 import { X } from "lucide-react";
@@ -10,18 +10,20 @@ export default function ColumnForm({
   onSubmit: (column: ColumnType) => void;
   onClose: () => void;
 }) {
+  const defaultValues = useMemo(() => ({ title: "" }), []);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
-  } = useForm<ColumnType>();
+  } = useForm<ColumnType>({ defaultValues });
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
+      reset(defaultValues);
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [defaultValues, isSubmitSuccessful, reset]);
 
   return (
     <form
@@ -29,14 +31,13 @@ export default function ColumnForm({
       onSubmit={handleSubmit(onSubmit)}
     >
       <input
-        className="px-3 py-1 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-4 py-1 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Enter title"
-        defaultValue=""
         {...register("title")}
       />
       <div className="flex gap-1">
         <button
-          className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
+          className="px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
           type="submit"
         >
           Add Column
