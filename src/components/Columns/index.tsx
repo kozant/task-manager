@@ -5,14 +5,8 @@ import type {
 } from "../../types/board";
 import type { RefObject } from "react";
 
-import { DndContext, closestCenter, type DragEndEvent } from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  rectSortingStrategy,
-} from "@dnd-kit/sortable";
 import { useBoardStore } from "../../store/useBoardStore";
-import { createRestrictToAncestorContainerModifier } from "../../utils/dndModifiers";
+import ColumnsDnd from "./ColumnsDnd";
 
 type ColumnListProps = {
   board: BoardType;
@@ -32,42 +26,25 @@ export default function ColumnList({
   if (!columns.length) return null;
 
   const updateBoard = useBoardStore((state) => state.updateBoard);
-  const restrictToAncestorContainer =
-    createRestrictToAncestorContainerModifier(containerRef);
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
-    }
-
-    const oldIndex = columns.findIndex((column) => column.id === active.id);
-    const newIndex = columns.findIndex((column) => column.id === over.id);
-
-    const newColumns = arrayMove(columns, oldIndex, newIndex);
+  const handleReorder = (newColumns: ColumnType[]) => {
     updateBoard({ ...board, columns: newColumns });
   };
 
-  const allItems = columns.map((column) => column.id);
-
   return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-      autoScroll={false}
-      modifiers={[restrictToAncestorContainer]}
+    <ColumnsDnd
+      columns={columns}
+      containerRef={containerRef}
+      onReorder={handleReorder}
     >
-      <SortableContext items={allItems} strategy={rectSortingStrategy}>
-        {columns.map((column) => (
-          <Column
-            key={column.id}
-            column={column}
-            onUpdateColumn={onUpdateColumn}
-            onDeleteColumn={onDeleteColumn}
-          />
-        ))}
-      </SortableContext>
-    </DndContext>
+      {columns.map((column) => (
+        <Column
+          key={column.id}
+          column={column}
+          onUpdateColumn={onUpdateColumn}
+          onDeleteColumn={onDeleteColumn}
+        />
+      ))}
+    </ColumnsDnd>
   );
 }

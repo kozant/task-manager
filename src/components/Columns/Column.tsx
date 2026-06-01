@@ -31,7 +31,6 @@ export default function Column({
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    cursor: "grab",
     opacity: isDragging ? 0.5 : 1,
   };
 
@@ -102,12 +101,12 @@ export default function Column({
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
       className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
       <div
+        {...attributes}
         {...listeners}
         className="pl-4 flex justify-between items-center cursor-grab"
       >

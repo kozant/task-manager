@@ -1,11 +1,7 @@
+import { useRef } from "react";
 import Card from "./Card";
 import type { Card as CardType } from "../../types/board";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { DndContext, closestCenter, type DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
+import CardsDnd from "./CardsDnd";
 
 type CardListProps = {
   cards: CardType[];
@@ -20,35 +16,17 @@ export default function CardList({
   onDelete,
   onReorder,
 }: CardListProps) {
+  const listRef = useRef<HTMLDivElement | null>(null);
+
   if (!cards) return null;
 
-  const handleCardDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
-    }
-
-    const oldIndex = cards.findIndex((card) => card.id === active.id);
-    const newIndex = cards.findIndex((card) => card.id === over.id);
-
-    const reorderedCards = arrayMove(cards, oldIndex, newIndex);
-    onReorder(reorderedCards);
-  };
-
   return (
-    <DndContext
-      collisionDetection={closestCenter}
-      onDragEnd={handleCardDragEnd}
-    >
-      <SortableContext
-        items={cards.map((card) => card.id)}
-        strategy={verticalListSortingStrategy}
-      >
+    <CardsDnd cards={cards} containerRef={listRef} onReorder={onReorder}>
+      <div className="flex flex-col gap-2" ref={listRef}>
         {cards.map((card) => (
           <Card key={card.id} card={card} onEdit={onEdit} onDelete={onDelete} />
         ))}
-      </SortableContext>
-    </DndContext>
+      </div>
+    </CardsDnd>
   );
 }
