@@ -3,6 +3,8 @@ import { SquarePen, Trash } from "lucide-react";
 import type { Card as CardType } from "../../types/board";
 import Tooltip from "../common/Tooltip";
 import CardForm from "../CardForm";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type CardProps = {
   card: CardType;
@@ -11,6 +13,21 @@ type CardProps = {
 };
 
 export default function Card({ card, onEdit, onDelete }: CardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: card.id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   const [isHovered, setIsHovered] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -52,7 +69,11 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
     />
   ) : (
     <div
-      className="pl-4 p-2 rounded-md bg-white shadow-md hover:shadow-lg cursor-pointer"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="pl-4 p-2 rounded-md bg-white shadow-md hover:shadow-lg cursor-grab"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
@@ -64,6 +85,7 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
               <button
                 type="button"
                 className="p-2 cursor-pointer hover:bg-gray-200 rounded-full"
+                onPointerDown={(event) => event.stopPropagation()}
                 onClick={handleOpenForm}
               >
                 <SquarePen size={15} color="rgb(80, 82, 88)" />
@@ -73,6 +95,7 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
               <button
                 type="button"
                 className="p-2 cursor-pointer hover:bg-gray-200 rounded-full"
+                onPointerDown={(event) => event.stopPropagation()}
                 onClick={handleDelete}
               >
                 <Trash size={15} color="rgb(80, 82, 88)" />

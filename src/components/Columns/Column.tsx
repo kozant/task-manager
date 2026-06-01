@@ -5,6 +5,8 @@ import CardForm from "../CardForm";
 import type { SubmitHandler } from "react-hook-form";
 import Tooltip from "../common/Tooltip";
 import { Trash } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type ColumnProps = {
   column: ColumnType;
@@ -17,6 +19,22 @@ export default function Column({
   onUpdateColumn,
   onDeleteColumn,
 }: ColumnProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: column.id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    cursor: "grab",
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   const { cards } = column;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -73,13 +91,26 @@ export default function Column({
     onDeleteColumn(column.id);
   }, [onDeleteColumn, column.id]);
 
+  const handleReorderCards = useCallback(
+    (reorderedCards: CardType[]) => {
+      onUpdateColumn({ ...column, cards: reorderedCards });
+    },
+    [column, onUpdateColumn],
+  );
+
   return (
     <div
-      className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm cursor-pointer"
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
-      <div className="pl-4 flex justify-between items-center">
+      <div
+        {...listeners}
+        className="pl-4 flex justify-between items-center cursor-grab"
+      >
         <strong>{column.title}</strong>
         {isHovered ? (
           <div className="flex">
@@ -87,6 +118,7 @@ export default function Column({
               <button
                 type="button"
                 className="p-2 cursor-pointer hover:bg-green-200 rounded-full"
+                onPointerDown={(event) => event.stopPropagation()}
                 onClick={handleDeleteColumn}
               >
                 <Trash size={15} color="rgb(80, 82, 88)" />
@@ -101,6 +133,7 @@ export default function Column({
         cards={cards}
         onEdit={handleEditCard}
         onDelete={handleDeleteCard}
+        onReorder={handleReorderCards}
       />
       {isFormOpen ? (
         <CardForm

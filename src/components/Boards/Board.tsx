@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import type {
   Board as BoardType,
   Column as ColumnType,
@@ -14,6 +14,7 @@ type BoardProps = {
 
 export default function Board({ board }: BoardProps) {
   const { columns } = board;
+  const boardContainerRef = useRef<HTMLDivElement>(null);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -60,13 +61,16 @@ export default function Board({ board }: BoardProps) {
 
   return (
     <div
-      className="p-4 bg-blue-100 rounded-md shadow-md"
+      ref={boardContainerRef}
+      className="p-4 bg-blue-100 rounded-md shadow-md overflow-hidden"
       style={{ height: "calc(100vh - 144px)" }}
     >
       <h2 className="text-2xl font-bold mb-4">{board.title}</h2>
       <div className="grid grid-cols-5 gap-4">
         <ColumnList
+          board={board}
           columns={columns}
+          containerRef={boardContainerRef}
           onUpdateColumn={handleUpdateColumn}
           onDeleteColumn={handleDeleteColumn}
         />
