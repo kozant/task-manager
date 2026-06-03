@@ -7,6 +7,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { useBoardStore } from "../../store/useBoardStore";
 import ColumnList from "../Columns";
 import ColumnForm from "../ColumnForm";
+import { Plus } from "lucide-react";
 
 type BoardProps = {
   board: BoardType;
@@ -79,10 +80,11 @@ export default function Board({ board }: BoardProps) {
         ) : (
           <button
             type="button"
-            className="p-2 rounded-md hover:bg-blue-200 cursor-pointer h-fit text-left"
+            className="flex items-center gap-1 p-2 rounded-md hover:bg-blue-200 cursor-pointer h-fit text-left"
+            style={{ color: "#202020", fontWeight: 500 }}
             onClick={handleOpenAddForm}
           >
-            + Add Column
+            <Plus size={17} /> <span>Add Column</span>
           </button>
         )}
       </div>

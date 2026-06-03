@@ -73,12 +73,17 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className="pl-4 p-2 rounded-md bg-white shadow-md hover:shadow-lg cursor-grab"
+      className="pl-4 p-2 rounded-md bg-white shadow-md hover:shadow-lg cursor-grab text-sm"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
       <div className="flex justify-between items-start mb-2">
-        <h3 className="text-lg font-bold">{card.title}</h3>
+        <h3
+          className="text-lg font-bold max-w-3/4"
+          style={{ color: "#172b4d" }}
+        >
+          {card.title}
+        </h3>
         {isHovered ? (
           <div className="flex">
             <Tooltip text="Edit Card">
@@ -106,7 +111,9 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
           <div style={{ height: 31 }} />
         )}
       </div>
-      <p className="pr-2 text-gray-600">{card.description}</p>
+      <p className="pr-2" style={{ color: "#202020" }}>
+        {card.description}
+      </p>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import type { Column as ColumnType, Card as CardType } from "../../types/board";
 import CardForm from "../CardForm";
 import type { SubmitHandler } from "react-hook-form";
 import Tooltip from "../common/Tooltip";
-import { Trash } from "lucide-react";
+import { Trash, Plus } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -101,7 +101,7 @@ export default function Column({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm"
+      className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm text-sm"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
@@ -110,7 +110,7 @@ export default function Column({
         {...listeners}
         className="pl-4 flex justify-between items-center cursor-grab"
       >
-        <strong>{column.title}</strong>
+        <strong style={{ color: "#172b4d" }}>{column.title}</strong>
         {isHovered ? (
           <div className="flex">
             <Tooltip text="Delete Column">
@@ -143,10 +143,11 @@ export default function Column({
       ) : (
         <button
           type="button"
-          className="pl-4 pr-4 p-2 rounded-md hover:bg-green-200 cursor-pointer text-left"
+          className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-green-200 cursor-pointer text-left"
+          style={{ color: "#202020", fontWeight: 500 }}
           onClick={handleOpenAddForm}
         >
-          + Add Card
+          <Plus size={17} /> <span>Add Card</span>
         </button>
       )}
     </div>
