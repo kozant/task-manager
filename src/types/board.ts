@@ -1,3 +1,8 @@
+export type ColumnColor = {
+  name: string;
+  background: string;
+};
+
 export interface Card {
   id: number;
   title: string;
@@ -7,6 +12,7 @@ export interface Card {
 export interface Column {
   id: number;
   title: string;
+  color: ColumnColor;
   cards: Card[];
 }
 

@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Column as ColumnType } from "../../types/board";
 import { X } from "lucide-react";
+import { COLUMN_COLORS } from "../../store/useBoardStore";
 
 export default function ColumnForm({
   onSubmit,
@@ -10,7 +11,10 @@ export default function ColumnForm({
   onSubmit: (column: ColumnType) => void;
   onClose: () => void;
 }) {
-  const defaultValues = useMemo(() => ({ title: "" }), []);
+  const defaultValues = useMemo(
+    () => ({ title: "", color: COLUMN_COLORS[0] }),
+    [],
+  );
 
   const {
     register,
@@ -43,7 +47,7 @@ export default function ColumnForm({
           Add Column
         </button>
         <button
-          className="p-1 rounded-md hover:bg-blue-200 cursor-pointer"
+          className="p-1 rounded-md hover:bg-black/10 cursor-pointer"
           type="button"
           onClick={onClose}
         >

@@ -14,17 +14,23 @@ export type DropdownItem = {
 };
 
 type DropdownProps = {
+  tooltipText: string;
   handle: React.ReactNode;
   items: DropdownItem[];
   onOpenChange?: (open: boolean) => void;
 };
 
-const Dropdown = ({ handle, items, onOpenChange }: DropdownProps) => {
+const Dropdown = ({
+  tooltipText,
+  handle,
+  items,
+  onOpenChange,
+}: DropdownProps) => {
   if (!items.length) return handle;
 
   return (
     <DropdownMenu.Root onOpenChange={onOpenChange}>
-      <Tooltip text="Actions">
+      <Tooltip text={tooltipText}>
         <DropdownMenu.Trigger className={DROPDOWN_STYLES.TRIGGER} asChild>
           {handle}
         </DropdownMenu.Trigger>
@@ -42,7 +48,7 @@ const Dropdown = ({ handle, items, onOpenChange }: DropdownProps) => {
           {items.map((item) => (
             <DropdownMenu.Item
               key={item.label}
-              className={`px-4 py-2 hover:bg-gray-100 cursor-pointer data-highlighted:outline-none ${
+              className={`${DROPDOWN_ITEM_STYLES.DEFAULT} ${
                 item.className || DROPDOWN_ITEM_STYLES.DEFAULT_TEXT_COLOR
               }`}
               onClick={item.onSelect}

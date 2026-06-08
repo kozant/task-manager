@@ -89,7 +89,7 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
             <Tooltip text="Edit Card">
               <button
                 type="button"
-                className="p-2 cursor-pointer hover:bg-gray-200 rounded-full"
+                className="p-2 cursor-pointer hover:bg-black/10 rounded-full"
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={handleOpenForm}
               >
@@ -99,7 +99,7 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
             <Tooltip text="Delete Card">
               <button
                 type="button"
-                className="p-2 cursor-pointer hover:bg-gray-200 rounded-full"
+                className="p-2 cursor-pointer hover:bg-black/10 rounded-full"
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={handleDelete}
               >

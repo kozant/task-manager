@@ -59,7 +59,7 @@ export default function CardForm({
           {buttonText}
         </button>
         <button
-          className="p-1 rounded-md hover:bg-green-200 cursor-pointer"
+          className="p-1 rounded-md hover:bg-black/10 cursor-pointer"
           type="button"
           onClick={onClose}
         >

@@ -44,6 +44,7 @@ export default function Board({ board }: BoardProps) {
       const newColumn: ColumnType = {
         id: Date.now(),
         title: data.title,
+        color: data.color,
         cards: [],
       };
       updateBoard({ ...board, columns: [...columns, newColumn] });
@@ -63,8 +64,8 @@ export default function Board({ board }: BoardProps) {
   return (
     <div
       ref={boardContainerRef}
-      className="p-4 bg-blue-100 rounded-md shadow-md overflow-hidden"
-      style={{ height: "calc(100vh - 144px)" }}
+      className="p-4 rounded-md shadow-md overflow-hidden"
+      style={{ height: "calc(100vh - 144px)", backgroundColor: "#dddddd" }}
     >
       <h2 className="text-2xl font-bold mb-4">{board.title}</h2>
       <div className="grid grid-cols-5 gap-4">
@@ -80,7 +81,7 @@ export default function Board({ board }: BoardProps) {
         ) : (
           <button
             type="button"
-            className="flex items-center gap-1 p-2 rounded-md hover:bg-blue-200 cursor-pointer h-fit text-left"
+            className="flex items-center gap-1 p-2 rounded-md hover:bg-black/10 cursor-pointer h-fit text-left"
             style={{ color: "#202020", fontWeight: 500 }}
             onClick={handleOpenAddForm}
           >

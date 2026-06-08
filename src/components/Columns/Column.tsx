@@ -30,6 +30,7 @@ export default function Column({
   } = useSortable({ id: column.id });
 
   const style: React.CSSProperties = {
+    backgroundColor: column.color.background,
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
@@ -119,7 +120,7 @@ export default function Column({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col gap-2 p-2 bg-green-100 rounded-md shadow-sm text-sm"
+      className="flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
@@ -132,6 +133,7 @@ export default function Column({
         {isActionsVisible ? (
           <div className="flex">
             <Dropdown
+              tooltipText="Actions"
               items={actions}
               handle={
                 <button
@@ -164,7 +166,7 @@ export default function Column({
       ) : (
         <button
           type="button"
-          className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-green-200 cursor-pointer text-left"
+          className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-black/10 cursor-pointer text-left"
           style={{ color: "#202020", fontWeight: 500 }}
           onClick={handleOpenAddForm}
         >

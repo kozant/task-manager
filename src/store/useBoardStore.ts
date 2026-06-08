@@ -1,6 +1,49 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Board } from "../types/board";
+import type { Board, ColumnColor } from "../types/board";
+
+export const COLUMN_COLORS: ColumnColor[] = [
+  {
+    name: "gray",
+    background: "#F0F1F2",
+  },
+  {
+    name: "lime",
+    background: "#EFFFD6",
+  },
+  {
+    name: "red",
+    background: "#FFECEB",
+  },
+  {
+    name: "orange",
+    background: "#FFF5DB",
+  },
+  {
+    name: "yellow",
+    background: "#FEF7C8",
+  },
+  {
+    name: "green",
+    background: "#DCFFF1",
+  },
+  {
+    name: "teal",
+    background: "#E7F9FF",
+  },
+  {
+    name: "blue",
+    background: "#E9F2FE",
+  },
+  {
+    name: "purple",
+    background: "#F8EEFE",
+  },
+  {
+    name: "magenta",
+    background: "#FFECF8",
+  },
+];
 
 const initialBoards: Board[] = [
   {
@@ -10,6 +53,7 @@ const initialBoards: Board[] = [
       {
         id: 1,
         title: "To Do",
+        color: { name: "green", background: "#DCFFF1" },
         cards: [
           {
             id: 1,
@@ -31,6 +75,7 @@ const initialBoards: Board[] = [
       {
         id: 2,
         title: "In Progress",
+        color: { name: "blue", background: "#E9F2FE" },
         cards: [
           {
             id: 4,
@@ -52,6 +97,7 @@ const initialBoards: Board[] = [
       {
         id: 3,
         title: "Done",
+        color: { name: "yellow", background: "#FEF7C8" },
         cards: [
           { id: 7, title: "Review code", description: "Conduct code review" },
           {
