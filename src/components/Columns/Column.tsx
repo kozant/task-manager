@@ -1,12 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import CardList from "../Cards";
 import type { Column as ColumnType, Card as CardType } from "../../types/board";
 import CardForm from "../CardForm";
 import type { SubmitHandler } from "react-hook-form";
-import Tooltip from "../common/Tooltip";
-import { Trash, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Dropdown from "../common/Dropdown";
+import { Ellipsis } from "lucide-react";
 
 type ColumnProps = {
   column: ColumnType;
@@ -37,7 +38,10 @@ export default function Column({
   const { cards } = column;
 
   const [isHovered, setIsHovered] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const isActionsVisible = isHovered || isDropdownOpen;
 
   const handleOnMouseEnter = useCallback(() => {
     setIsHovered(true);
@@ -46,6 +50,12 @@ export default function Column({
   const handleOnMouseLeave = useCallback(() => {
     setIsHovered(false);
   }, []);
+
+  useEffect(() => {
+    if (!isDropdownOpen) {
+      setIsHovered(false);
+    }
+  }, [isDropdownOpen]);
 
   const handleOpenAddForm = useCallback(() => {
     setIsFormOpen(true);
@@ -97,6 +107,14 @@ export default function Column({
     [column, onUpdateColumn],
   );
 
+  const actions = [
+    {
+      label: "Delete",
+      onSelect: handleDeleteColumn,
+      className: "text-red-600",
+    },
+  ];
+
   return (
     <div
       ref={setNodeRef}
@@ -111,18 +129,21 @@ export default function Column({
         className="pl-4 flex justify-between items-center cursor-grab"
       >
         <strong style={{ color: "#172b4d" }}>{column.title}</strong>
-        {isHovered ? (
+        {isActionsVisible ? (
           <div className="flex">
-            <Tooltip text="Delete Column">
-              <button
-                type="button"
-                className="p-2 cursor-pointer hover:bg-green-200 rounded-full"
-                onPointerDown={(event) => event.stopPropagation()}
-                onClick={handleDeleteColumn}
-              >
-                <Trash size={15} color="rgb(80, 82, 88)" />
-              </button>
-            </Tooltip>
+            <Dropdown
+              items={actions}
+              handle={
+                <button
+                  type="button"
+                  className="p-2 cursor-pointer rounded-full outline-none"
+                  onPointerDown={(event) => event.stopPropagation()}
+                >
+                  <Ellipsis size={15} />
+                </button>
+              }
+              onOpenChange={setIsDropdownOpen}
+            />
           </div>
         ) : (
           <div style={{ height: 31 }} />
