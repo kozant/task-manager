@@ -11,6 +11,7 @@ export type DropdownItem = {
   label: string;
   onSelect: () => void;
   className?: string;
+  group: string;
 };
 
 type DropdownProps = {
@@ -27,6 +28,23 @@ const Dropdown = ({
   onOpenChange,
 }: DropdownProps) => {
   if (!items.length) return handle;
+
+  const getDropdownItemsByGroup = (group: string) =>
+    items
+      .filter((item) => item.group === group)
+      .map((item) => (
+        <DropdownMenu.Item
+          key={item.label}
+          className={`${DROPDOWN_ITEM_STYLES.DEFAULT} ${
+            item.className || DROPDOWN_ITEM_STYLES.DEFAULT_THEME
+          }`}
+          onClick={item.onSelect}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          {item.label}
+        </DropdownMenu.Item>
+      ));
 
   return (
     <DropdownMenu.Root onOpenChange={onOpenChange}>
@@ -45,19 +63,9 @@ const Dropdown = ({
             boxShadow: DROPDOWN_STYLES.BOX_SHADOW,
           }}
         >
-          {items.map((item) => (
-            <DropdownMenu.Item
-              key={item.label}
-              className={`${DROPDOWN_ITEM_STYLES.DEFAULT} ${
-                item.className || DROPDOWN_ITEM_STYLES.DEFAULT_TEXT_COLOR
-              }`}
-              onClick={item.onSelect}
-              onPointerDown={(e) => e.stopPropagation()}
-              onMouseDown={(e) => e.stopPropagation()}
-            >
-              {item.label}
-            </DropdownMenu.Item>
-          ))}
+          {getDropdownItemsByGroup("list")}
+          <DropdownMenu.Separator className="m-2 h-px bg-black/10" />
+          {getDropdownItemsByGroup("danger")}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

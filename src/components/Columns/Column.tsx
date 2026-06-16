@@ -110,9 +110,20 @@ export default function Column({
 
   const actions = [
     {
-      label: "Delete",
+      group: "list",
+      label: "Add Card",
+      onSelect: handleOpenAddForm,
+    },
+    // {
+    //   group: "list",
+    //   label: "Edit Column Color",
+    //   onSelect: handleOpenAddForm,
+    // },
+    {
+      group: "danger",
+      label: "Delete List",
       onSelect: handleDeleteColumn,
-      className: "text-red-600",
+      className: "text-red-600 hover:bg-red-600/10",
     },
   ];
 

@@ -7,9 +7,8 @@ export const DROPDOWN_STYLES = {
 } as const;
 
 export const DROPDOWN_ITEM_STYLES = {
-  DEFAULT_TEXT_COLOR: "text-gray-800",
-  DEFAULT:
-    "px-4 py-2 hover:bg-black/10 cursor-pointer data-highlighted:outline-none",
+  DEFAULT: "px-2 py-1 cursor-pointer data-highlighted:outline-none",
+  DEFAULT_THEME: "text-gray-800 hover:bg-black/10 ",
 } as const;
 
 export const DROPDOWN_CONFIG = {
