@@ -1,5 +1,12 @@
 import React, { type RefObject } from "react";
-import { DndContext, closestCenter, type DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+  type DragEndEvent,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   rectSortingStrategy,
@@ -40,8 +47,17 @@ export default function ColumnsDnd({
 
   const items = columns.map((c) => c.id);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+  );
+
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       autoScroll={false}

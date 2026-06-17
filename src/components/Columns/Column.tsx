@@ -132,7 +132,7 @@ export default function Column({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm"
+      className="flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm select-none"
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >

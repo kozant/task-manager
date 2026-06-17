@@ -1,5 +1,12 @@
 import React, { type RefObject } from "react";
-import { DndContext, closestCenter, type DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+  type DragEndEvent,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   rectSortingStrategy,
@@ -21,6 +28,14 @@ export default function CardsDnd({
   onReorder,
   children,
 }: Props) {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+  );
+
   const restrictToAncestorContainer =
     createRestrictToAncestorContainerModifier(containerRef);
 
@@ -44,6 +59,7 @@ export default function CardsDnd({
 
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
       autoScroll={false}

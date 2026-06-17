@@ -18,6 +18,7 @@ export default function CardForm({
     () => ({
       title: defaultValue?.title ?? "",
       description: defaultValue?.description ?? "",
+      priority: defaultValue?.priority ?? 0,
     }),
     [defaultValue?.title, defaultValue?.description],
   );
