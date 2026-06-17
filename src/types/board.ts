@@ -5,6 +5,7 @@ export type ColumnColor = {
 
 export interface Card {
   id: number;
+  priority: number;
   title: string;
   description: string;
 }

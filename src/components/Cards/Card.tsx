@@ -5,6 +5,7 @@ import Tooltip from "../common/Tooltip";
 import CardForm from "../CardForm";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { PRIORITY_LEVELS } from "../../store/useBoardStore";
 
 type CardProps = {
   card: CardType;
@@ -60,6 +61,11 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
     setIsHovered(false);
   }, []);
 
+  const getPriorityLabel = (priority: number) => {
+    const level = PRIORITY_LEVELS.find((p) => p.level === priority);
+    return level ? level.name : "Unknown";
+  };
+
   return isFormOpen ? (
     <CardForm
       buttonText="Update Card"
@@ -77,13 +83,18 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
     >
-      <div className="flex justify-between items-start mb-2">
-        <h3
-          className="text-lg font-bold max-w-3/4"
-          style={{ color: "#172b4d" }}
+      <div className="flex justify-between items-start">
+        <div
+          className={`text-xs font-semibold px-2 py-1 rounded ${
+            card.priority === 0
+              ? "bg-red-200 text-red-800"
+              : card.priority === 1
+                ? "bg-yellow-200 text-yellow-800"
+                : "bg-green-200 text-green-800"
+          }`}
         >
-          {card.title}
-        </h3>
+          {getPriorityLabel(card.priority)}
+        </div>
         {isHovered ? (
           <div className="flex">
             <Tooltip text="Edit Card">
@@ -111,6 +122,9 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
           <div style={{ height: 31 }} />
         )}
       </div>
+      <h3 className="text-lg font-bold mb-2" style={{ color: "#172b4d" }}>
+        {card.title}
+      </h3>
       <p className="pr-2" style={{ color: "#202020" }}>
         {card.description}
       </p>

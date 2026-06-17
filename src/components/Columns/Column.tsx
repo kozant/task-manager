@@ -70,6 +70,7 @@ export default function Column({
     (data) => {
       const newCard: CardType = {
         id: Date.now(),
+        priority: data.priority,
         title: data.title,
         description: data.description,
       };
