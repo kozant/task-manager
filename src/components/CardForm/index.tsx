@@ -1,7 +1,11 @@
 import { useEffect, useMemo } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type { Card as CardType } from "../../types/board";
 import { X } from "lucide-react";
+import SelectMenu from "../common/Select";
+import { PRIORITY_LEVELS } from "../../store/useBoardStore";
+
+import { FORM_STYLES } from "./form.styles";
 
 export default function CardForm({
   buttonText,
@@ -25,6 +29,7 @@ export default function CardForm({
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
@@ -41,26 +46,34 @@ export default function CardForm({
   }, [defaultValues, isSubmitSuccessful, reset]);
 
   return (
-    <form className="grid grid-rows-2 gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className={FORM_STYLES.FORM} onSubmit={handleSubmit(onSubmit)}>
       <input
-        className="px-4 py-1 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={FORM_STYLES.INPUT}
         placeholder="Enter title"
         {...register("title")}
       />
       <input
-        className="px-4 py-1 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={FORM_STYLES.INPUT}
         placeholder="Enter description"
         {...register("description")}
       />
-      <div className="flex gap-1">
-        <button
-          className="px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
-          type="submit"
-        >
+      <Controller
+        name="priority"
+        control={control}
+        render={({ field }) => (
+          <SelectMenu
+            items={PRIORITY_LEVELS}
+            selectedItem={field.value}
+            onValueChange={field.onChange}
+          />
+        )}
+      />
+      <div className={FORM_STYLES.BUTTON_CONTAINER}>
+        <button className={FORM_STYLES.SUBMIT_BUTTON} type="submit">
           {buttonText}
         </button>
         <button
-          className="p-1 rounded-md hover:bg-black/10 cursor-pointer"
+          className={FORM_STYLES.CANCEL_BUTTON}
           type="button"
           onClick={onClose}
         >
