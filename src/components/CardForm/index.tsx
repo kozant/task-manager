@@ -41,7 +41,7 @@ export default function CardForm({
   }, [defaultValues, isSubmitSuccessful, reset]);
 
   return (
-    <form className="grid grid-rows-2 gap-3" onSubmit={handleSubmit(onSubmit)}>
+    <form className="grid grid-rows-2 gap-4" onSubmit={handleSubmit(onSubmit)}>
       <input
         className="px-4 py-1 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Enter title"

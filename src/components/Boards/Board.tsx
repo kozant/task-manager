@@ -8,6 +8,7 @@ import { useBoardStore } from "../../store/useBoardStore";
 import ColumnList from "../Columns";
 import ColumnForm from "../ColumnForm";
 import { Plus } from "lucide-react";
+import Modal from "../common/Modal";
 
 type BoardProps = {
   board: BoardType;
@@ -17,14 +18,14 @@ export default function Board({ board }: BoardProps) {
   const { columns } = board;
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenAddForm = useCallback(() => {
-    setIsFormOpen(true);
+    setIsModalOpen(true);
   }, []);
 
   const handleCloseAddForm = useCallback(() => {
-    setIsFormOpen(false);
+    setIsModalOpen(false);
   }, []);
 
   const updateBoard = useBoardStore((state) => state.updateBoard);
@@ -76,19 +77,18 @@ export default function Board({ board }: BoardProps) {
           onUpdateColumn={handleUpdateColumn}
           onDeleteColumn={handleDeleteColumn}
         />
-        {isFormOpen ? (
-          <ColumnForm onSubmit={handleAddColumn} onClose={handleCloseAddForm} />
-        ) : (
-          <button
-            type="button"
-            className="flex items-center gap-1 p-2 rounded-md hover:bg-black/10 cursor-pointer h-fit text-left"
-            style={{ color: "#202020", fontWeight: 500 }}
-            onClick={handleOpenAddForm}
-          >
-            <Plus size={17} /> <span>Add Column</span>
-          </button>
-        )}
+        <button
+          type="button"
+          className="flex items-center gap-1 p-2 rounded-md hover:bg-black/10 cursor-pointer h-fit text-left"
+          style={{ color: "#202020", fontWeight: 500 }}
+          onClick={handleOpenAddForm}
+        >
+          <Plus size={17} /> <span>Add Column</span>
+        </button>
       </div>
+      <Modal title="Add Column" isOpen={isModalOpen} onChange={setIsModalOpen}>
+        <ColumnForm onSubmit={handleAddColumn} onClose={handleCloseAddForm} />
+      </Modal>
     </div>
   );
 }

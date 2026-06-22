@@ -48,9 +48,10 @@ export default function Modal({
                   rounded-md
                   p-1
                   hover:bg-black/10
+                  cursor-pointer
                 "
               >
-                <X size={18} />
+                <X color="rgb(80, 82, 88)" />
               </button>
             </Dialog.Close>
           </div>

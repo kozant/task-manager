@@ -38,9 +38,7 @@ const Dropdown = ({
           className={`${DROPDOWN_ITEM_STYLES.DEFAULT} ${
             item.className || DROPDOWN_ITEM_STYLES.DEFAULT_THEME
           }`}
-          onClick={item.onSelect}
-          onPointerDown={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
+          onSelect={item.onSelect}
         >
           {item.label}
         </DropdownMenu.Item>

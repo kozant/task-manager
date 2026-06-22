@@ -31,7 +31,7 @@ export default function ColumnForm({
 
   return (
     <form
-      className="flex flex-col gap-3 bg-gray-50 p-2 rounded-md shadow-sm h-fit"
+      className="flex flex-col gap-4 rounded-md h-fit"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input

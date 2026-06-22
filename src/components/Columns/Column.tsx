@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import CardList from "../Cards";
 import type { Column as ColumnType, Card as CardType } from "../../types/board";
 import CardForm from "../CardForm";
@@ -8,6 +8,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Dropdown from "../common/Dropdown";
 import { Ellipsis } from "lucide-react";
+import Modal from "../common/Modal";
 
 type ColumnProps = {
   column: ColumnType;
@@ -38,32 +39,33 @@ export default function Column({
 
   const { cards } = column;
 
-  const [isHovered, setIsHovered] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingOpenModal, setPendingOpenModal] = useState(false);
 
-  const isActionsVisible = isHovered || isDropdownOpen;
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-  const handleOnMouseEnter = useCallback(() => {
-    setIsHovered(true);
-  }, []);
-
-  const handleOnMouseLeave = useCallback(() => {
-    setIsHovered(false);
-  }, []);
-
-  useEffect(() => {
-    if (!isDropdownOpen) {
-      setIsHovered(false);
+  const handleOpenAddForm = () => {
+    if (isDropdownOpen) {
+      setPendingOpenModal(true);
+    } else {
+      openModal();
     }
-  }, [isDropdownOpen]);
+  };
 
-  const handleOpenAddForm = useCallback(() => {
-    setIsFormOpen(true);
-  }, []);
+  const handleDropdownChange = (open: boolean) => {
+    setIsDropdownOpen(open);
+
+    if (!open && pendingOpenModal) {
+      setPendingOpenModal(false);
+      openModal();
+    }
+  };
 
   const handleCloseAddForm = useCallback(() => {
-    setIsFormOpen(false);
+    setIsModalOpen(false);
   }, []);
 
   const handleAddCard: SubmitHandler<CardType> = useCallback(
@@ -122,19 +124,27 @@ export default function Column({
     // },
     {
       group: "danger",
-      label: "Delete List",
+      label: "Delete Column",
       onSelect: handleDeleteColumn,
       className: "text-red-600 hover:bg-red-600/10",
     },
   ];
 
+  const actionsClassName = `
+  flex
+  transition-opacity
+  ${
+    isDropdownOpen
+      ? "opacity-100 pointer-events-auto"
+      : "opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto"
+  }
+`;
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className="flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm select-none"
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
+      className="group flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm select-none"
     >
       <div
         {...attributes}
@@ -142,26 +152,23 @@ export default function Column({
         className="pl-4 flex justify-between items-center cursor-grab"
       >
         <strong style={{ color: "#172b4d" }}>{column.title}</strong>
-        {isActionsVisible ? (
-          <div className="flex">
-            <Dropdown
-              tooltipText="Actions"
-              items={actions}
-              handle={
-                <button
-                  type="button"
-                  className="p-2 cursor-pointer rounded-full outline-none"
-                  onPointerDown={(event) => event.stopPropagation()}
-                >
-                  <Ellipsis size={15} />
-                </button>
-              }
-              onOpenChange={setIsDropdownOpen}
-            />
-          </div>
-        ) : (
-          <div style={{ height: 31 }} />
-        )}
+
+        <div className={actionsClassName}>
+          <Dropdown
+            tooltipText="Actions"
+            items={actions}
+            handle={
+              <button
+                type="button"
+                className="p-2 cursor-pointer rounded-full outline-none"
+                onPointerDown={(event) => event.stopPropagation()}
+              >
+                <Ellipsis size={15} />
+              </button>
+            }
+            onOpenChange={handleDropdownChange}
+          />
+        </div>
       </div>
       <CardList
         cards={cards}
@@ -169,22 +176,21 @@ export default function Column({
         onDelete={handleDeleteCard}
         onReorder={handleReorderCards}
       />
-      {isFormOpen ? (
+      <button
+        type="button"
+        className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-black/10 cursor-pointer text-left"
+        style={{ color: "#202020", fontWeight: 500 }}
+        onClick={handleOpenAddForm}
+      >
+        <Plus size={17} /> <span>Add Card</span>
+      </button>
+      <Modal title="Add Card" isOpen={isModalOpen} onChange={setIsModalOpen}>
         <CardForm
           buttonText="Add Card"
           onSubmit={handleAddCard}
           onClose={handleCloseAddForm}
         />
-      ) : (
-        <button
-          type="button"
-          className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-black/10 cursor-pointer text-left"
-          style={{ color: "#202020", fontWeight: 500 }}
-          onClick={handleOpenAddForm}
-        >
-          <Plus size={17} /> <span>Add Card</span>
-        </button>
-      )}
+      </Modal>
     </div>
   );
 }
