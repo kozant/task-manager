@@ -4,11 +4,14 @@ export const SELECT_STYLES = {
     rounded-md
     bg-white
     px-4
-    shadow-sm
+    border border-gray-300
+    text-gray-900
+    placeholder:text-gray-400
+    focus:border-blue-500
     leading-none
     cursor-pointer
     focus:outline-none
-    focus:ring-2 focus:ring-blue-500
+    focus:ring-1 focus:ring-blue-500
   `,
 
   ICON: `
