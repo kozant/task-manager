@@ -1,25 +1,28 @@
+import type { ReactNode } from "react";
 import * as Select from "@radix-ui/react-select";
 import { ChevronDown } from "lucide-react";
 
 import { SELECT_STYLES } from "./select.styles";
 import { SELECT_CONFIG } from "./select.config";
 
+type SelectItem = {
+  label: ReactNode;
+  value: string;
+};
+
 type SelectMenuProps = {
-  items: { name: string; level: number }[];
-  selectedItem?: number;
-  onValueChange: (value: number) => void;
+  items: SelectItem[];
+  selectedItem?: string;
+  onChange: (value: string) => void;
 };
 
 export default function SelectMenu({
   items,
   selectedItem,
-  onValueChange,
+  onChange,
 }: SelectMenuProps) {
   return (
-    <Select.Root
-      value={String(selectedItem)}
-      onValueChange={(value) => onValueChange(Number(value))}
-    >
+    <Select.Root value={selectedItem} onValueChange={onChange}>
       <Select.Trigger className={SELECT_STYLES.TRIGGER}>
         <Select.Value />
 
@@ -39,11 +42,11 @@ export default function SelectMenu({
           <Select.Viewport className={SELECT_STYLES.VIEWPORT}>
             {items.map((item) => (
               <Select.Item
-                key={item.level}
-                value={String(item.level)}
+                key={item.value}
+                value={item.value}
                 className={SELECT_STYLES.ITEM}
               >
-                <Select.ItemText>{item.name}</Select.ItemText>
+                <Select.ItemText>{item.label}</Select.ItemText>
               </Select.Item>
             ))}
           </Select.Viewport>

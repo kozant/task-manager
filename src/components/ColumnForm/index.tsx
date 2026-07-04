@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import type { Column as ColumnType } from "../../types/board";
 import { X } from "lucide-react";
 import { COLUMN_COLORS } from "../../store/useBoardStore";
+import { FORM_STYLES } from "../CardForm/form.styles";
 
 export default function ColumnForm({
   onSubmit,
@@ -18,6 +19,7 @@ export default function ColumnForm({
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
@@ -31,23 +33,52 @@ export default function ColumnForm({
 
   return (
     <form
-      className="flex flex-col gap-4 rounded-md h-fit"
+      className="flex flex-col gap-5 rounded-md h-fit"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <input
-        className="px-4 py-1 rounded-md shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Enter title"
-        {...register("title")}
-      />
-      <div className="flex gap-1">
-        <button
-          className="px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
-          type="submit"
-        >
+      <div>
+        <label className={FORM_STYLES.LABEL} htmlFor="title">
+          Title
+        </label>
+        <input
+          className={FORM_STYLES.INPUT}
+          placeholder="Enter title"
+          {...register("title")}
+        />
+      </div>
+
+      <div>
+        <label className={FORM_STYLES.LABEL} htmlFor="color">
+          Color
+        </label>
+        <Controller
+          name="color"
+          control={control}
+          render={({ field }) => (
+            <div className="grid grid-cols-5 gap-3">
+              {COLUMN_COLORS.map((option) => (
+                <button
+                  key={option.name}
+                  type="button"
+                  onClick={() => field.onChange(option)}
+                  className={`
+                    ${FORM_STYLES.COLOR_SELECT}
+                    ${field.value.name === option.name ? "ring-2 ring-blue-500 ring-offset-2" : ""}
+                  `}
+                  style={{ backgroundColor: option.background }}
+                />
+              ))}
+            </div>
+          )}
+        />
+      </div>
+
+      <div className={FORM_STYLES.BUTTON_CONTAINER}>
+        <button className={FORM_STYLES.SUBMIT_BUTTON} type="submit">
           Add Column
         </button>
         <button
-          className="p-1 rounded-md hover:bg-black/10 cursor-pointer"
+          className={FORM_STYLES.CANCEL_BUTTON}
           type="button"
           onClick={onClose}
         >

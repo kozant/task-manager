@@ -78,9 +78,12 @@ export default function CardForm({
           control={control}
           render={({ field }) => (
             <SelectMenu
-              items={PRIORITY_LEVELS}
-              selectedItem={field.value}
-              onValueChange={field.onChange}
+              items={PRIORITY_LEVELS.map((priority) => ({
+                label: priority.name,
+                value: String(priority.level),
+              }))}
+              selectedItem={String(field.value)}
+              onChange={(value) => field.onChange(Number(value))}
             />
           )}
         />

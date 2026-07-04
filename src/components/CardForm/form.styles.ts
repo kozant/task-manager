@@ -25,6 +25,17 @@ export const FORM_STYLES = {
     focus:outline-none
     focus:ring-1 focus:ring-blue-500
   `,
+  COLOR_SELECT: `
+    relative
+    h-10
+    rounded-md
+    border
+    border-black/10
+    transition-all
+    cursor-pointer
+    hover:scale-105
+    hover:shadow-sm
+  `,
   LABEL: `block text-gray-500 mb-1`,
   BUTTON_CONTAINER: `flex gap-1`,
   SUBMIT_BUTTON: `px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer`,

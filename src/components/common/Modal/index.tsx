@@ -37,7 +37,7 @@ export default function Modal({
             shadow-xl
           "
         >
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-3 flex items-center justify-between">
             <Dialog.Title className="text-lg font-semibold">
               {title}
             </Dialog.Title>
