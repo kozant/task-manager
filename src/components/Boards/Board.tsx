@@ -7,8 +7,8 @@ import type { SubmitHandler } from "react-hook-form";
 import { useBoardStore } from "../../store/useBoardStore";
 import ColumnList from "../Columns";
 import ColumnForm from "../ColumnForm";
-import { Plus } from "lucide-react";
 import Modal from "../common/Modal";
+import { PanelsTopLeft, Plus } from "lucide-react";
 
 type BoardProps = {
   board: BoardType;
@@ -65,26 +65,43 @@ export default function Board({ board }: BoardProps) {
   return (
     <div
       ref={boardContainerRef}
-      className="p-4 rounded-md shadow-md overflow-hidden"
-      style={{ height: "calc(100vh - 144px)", backgroundColor: "#dddddd" }}
+      className="py-4"
+      style={{ height: "calc(100vh - 64px)", backgroundColor: "#dddddd" }}
     >
-      <h2 className="text-2xl font-bold mb-4">{board.title}</h2>
-      <div className="grid grid-cols-5 gap-4">
-        <ColumnList
-          board={board}
-          columns={columns}
-          containerRef={boardContainerRef}
-          onUpdateColumn={handleUpdateColumn}
-          onDeleteColumn={handleDeleteColumn}
-        />
-        <button
-          type="button"
-          className="flex items-center gap-1 p-2 rounded-md hover:bg-black/10 cursor-pointer h-fit text-left"
-          style={{ color: "#202020", fontWeight: 500 }}
-          onClick={handleOpenAddForm}
-        >
-          <Plus size={17} /> <span>Add Column</span>
-        </button>
+      <h2 className="text-2xl font-bold mb-4 pl-6 pr-4">{board.title}</h2>
+      <div
+        className="flex flex-col justify-between"
+        style={{ height: "calc(100% - 32px)" }}
+      >
+        <ul className="flex flex-row overflow-x-auto overflow-y-hidden px-4">
+          <ColumnList
+            board={board}
+            columns={columns}
+            containerRef={boardContainerRef}
+            onUpdateColumn={handleUpdateColumn}
+            onDeleteColumn={handleDeleteColumn}
+          />
+          <li>
+            <button
+              type="button"
+              className="flex items-center gap-1 p-2 rounded-md hover:bg-black/10 cursor-pointer h-fit w-64 text-left"
+              style={{ color: "#202020", fontWeight: 500 }}
+              onClick={handleOpenAddForm}
+            >
+              <Plus size={17} /> <div>Add Column</div>
+            </button>
+          </li>
+        </ul>
+        <div className="p-4 absolute bottom-0 w-full flex justify-center">
+          <button
+            type="button"
+            className="flex justify-center items-center gap-2 p-2 rounded-md bg-white hover:bg-black/10 cursor-pointer h-fit w-64 text-left"
+            style={{ color: "#202020", fontWeight: 500 }}
+            onClick={handleOpenAddForm}
+          >
+            <PanelsTopLeft size={17} /> <div>Choose Board</div>
+          </button>
+        </div>
       </div>
       <Modal title="Add Column" isOpen={isModalOpen} onChange={setIsModalOpen}>
         <ColumnForm onSubmit={handleAddColumn} onClose={handleCloseAddForm} />

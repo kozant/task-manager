@@ -141,56 +141,61 @@ export default function Column({
 `;
 
   return (
-    <div
+    <li
       ref={setNodeRef}
-      style={style}
-      className="group flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm select-none"
+      className="px-2"
+      style={{ height: "calc(100% - 96px)" }}
     >
       <div
-        {...attributes}
-        {...listeners}
-        className="pl-4 flex justify-between items-center cursor-grab"
+        style={style}
+        className="group flex flex-col gap-2 p-2 rounded-md shadow-sm text-sm select-none max-h-full overflow-y-auto overflow-x-hidden w-64"
       >
-        <strong style={{ color: "#172b4d" }}>{column.title}</strong>
+        <div
+          {...attributes}
+          {...listeners}
+          className="pl-4 flex justify-between items-center cursor-grab"
+        >
+          <strong style={{ color: "#172b4d" }}>{column.title}</strong>
 
-        <div className={actionsClassName}>
-          <Dropdown
-            tooltipText="Actions"
-            items={actions}
-            handle={
-              <button
-                type="button"
-                className="p-2 cursor-pointer rounded-full outline-none"
-                onPointerDown={(event) => event.stopPropagation()}
-              >
-                <Ellipsis size={15} />
-              </button>
-            }
-            onOpenChange={handleDropdownChange}
-          />
+          <div className={actionsClassName}>
+            <Dropdown
+              tooltipText="Actions"
+              items={actions}
+              handle={
+                <button
+                  type="button"
+                  className="p-2 cursor-pointer rounded-full outline-none"
+                  onPointerDown={(event) => event.stopPropagation()}
+                >
+                  <Ellipsis size={15} />
+                </button>
+              }
+              onOpenChange={handleDropdownChange}
+            />
+          </div>
         </div>
-      </div>
-      <CardList
-        cards={cards}
-        onEdit={handleEditCard}
-        onDelete={handleDeleteCard}
-        onReorder={handleReorderCards}
-      />
-      <button
-        type="button"
-        className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-black/10 cursor-pointer text-left"
-        style={{ color: "#202020", fontWeight: 500 }}
-        onClick={handleOpenAddForm}
-      >
-        <Plus size={17} /> <span>Add Card</span>
-      </button>
-      <Modal title="Add Card" isOpen={isModalOpen} onChange={setIsModalOpen}>
-        <CardForm
-          buttonText="Add Card"
-          onSubmit={handleAddCard}
-          onClose={handleCloseAddForm}
+        <CardList
+          cards={cards}
+          onEdit={handleEditCard}
+          onDelete={handleDeleteCard}
+          onReorder={handleReorderCards}
         />
-      </Modal>
-    </div>
+        <button
+          type="button"
+          className="flex items-center gap-1 pl-4 pr-4 p-2 rounded-md hover:bg-black/10 cursor-pointer text-left"
+          style={{ color: "#202020", fontWeight: 500 }}
+          onClick={handleOpenAddForm}
+        >
+          <Plus size={17} /> <span>Add Card</span>
+        </button>
+        <Modal title="Add Card" isOpen={isModalOpen} onChange={setIsModalOpen}>
+          <CardForm
+            buttonText="Add Card"
+            onSubmit={handleAddCard}
+            onClose={handleCloseAddForm}
+          />
+        </Modal>
+      </div>
+    </li>
   );
 }
