@@ -73,7 +73,7 @@ export default function Board({ board }: BoardProps) {
         className="flex flex-col justify-between"
         style={{ height: "calc(100% - 32px)" }}
       >
-        <ul className="flex flex-row overflow-x-auto overflow-y-hidden px-4">
+        <ul className="flex flex-row h-full overflow-x-auto overflow-y-hidden px-4">
           <ColumnList
             board={board}
             columns={columns}
@@ -92,7 +92,7 @@ export default function Board({ board }: BoardProps) {
             </button>
           </li>
         </ul>
-        <div className="p-4 absolute bottom-0 w-full flex justify-center">
+        <div className="absolute bottom-7 w-full flex justify-center">
           <button
             type="button"
             className="flex justify-center items-center gap-2 p-2 rounded-md bg-white hover:bg-black/10 cursor-pointer h-fit w-64 text-left"
