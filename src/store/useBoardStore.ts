@@ -138,9 +138,10 @@ const initialBoards: Board[] = [
 type BoardState = {
   boards: Board[];
   activeBoardId: number | null;
+  changeActiveBoard: (boardId: number) => void;
   createBoard: (title?: string) => void;
   updateBoard: (board: Board) => void;
-  changeActiveBoard: (boardId: number) => void;
+  deleteBoard: (boardId: number) => void;
 };
 
 export const useBoardStore = create<BoardState>()(
@@ -148,17 +149,47 @@ export const useBoardStore = create<BoardState>()(
     (set, get) => ({
       boards: initialBoards,
       activeBoardId: 1,
-      createBoard: (title = `Board ${get().boards.length + 1}`) =>
-        set((state) => ({
-          boards: [...state.boards, { id: Date.now(), title, columns: [] }],
-        })),
       changeActiveBoard: (boardId) => set({ activeBoardId: boardId }),
+      createBoard: (title = `Board ${get().boards.length + 1}`) =>
+        set((state) => {
+          const newBoard: Board = { id: Date.now(), title, columns: [] };
+          return {
+            boards: [...state.boards, newBoard],
+            activeBoardId: newBoard.id,
+          };
+        }),
       updateBoard: (updatedBoard) =>
         set((state) => ({
           boards: state.boards.map((board) =>
             board.id === updatedBoard.id ? updatedBoard : board,
           ),
         })),
+      deleteBoard: (boardId) =>
+        set((state) => {
+          const boardIndex = state.boards.findIndex(
+            (board) => board.id === boardId,
+          );
+          const remainingBoards = state.boards.filter(
+            (board) => board.id !== boardId,
+          );
+
+          let nextActiveBoardId = state.activeBoardId;
+
+          if (state.activeBoardId === boardId) {
+            if (boardIndex > 0) {
+              nextActiveBoardId = state.boards[boardIndex - 1].id;
+            } else if (remainingBoards.length > 0) {
+              nextActiveBoardId = remainingBoards[0].id;
+            } else {
+              nextActiveBoardId = null;
+            }
+          }
+
+          return {
+            boards: remainingBoards,
+            activeBoardId: nextActiveBoardId,
+          };
+        }),
     }),
     {
       name: "task-manager-boards",

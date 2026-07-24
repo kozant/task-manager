@@ -34,26 +34,32 @@ export default function BoardForm({
 
   return (
     <div className="flex flex-col gap-5 h-fit">
-      <div className="grid grid-flow-col auto-cols-max gap-3 overflow-x-auto p-2">
-        {boards.map((board) => (
-          <BoardCell
-            key={board.id}
-            isActive={board.id === activeBoardId}
-            board={board}
-            onChange={changeActiveBoard}
-            onClose={onClose}
-          />
-        ))}
-      </div>
-      <div className="flex flex-row gap-2 items-center justify-center">
-        <div className="w-full h-0.5 bg-gray-200"></div>
-        <div className="font-semibold text-gray-400">Or</div>
-        <div className="w-full h-0.5 bg-gray-200"></div>
-      </div>
+      {!boards.length ? null : (
+        <>
+          <div className="grid grid-flow-col auto-cols-max gap-3 overflow-x-auto py-2 px-1">
+            {boards.map((board) => (
+              <BoardCell
+                key={board.id}
+                isActive={board.id === activeBoardId}
+                board={board}
+                onChange={changeActiveBoard}
+                onClose={onClose}
+              />
+            ))}
+          </div>
+          <div className="flex flex-row gap-2 items-center justify-center">
+            <div className="w-full h-0.5 bg-gray-200"></div>
+            <div className="font-semibold text-gray-400">Or</div>
+            <div className="w-full h-0.5 bg-gray-200"></div>
+          </div>
+        </>
+      )}
       <div>
-        <div className="text-lg font-semibold mb-5 leading-none">
-          Create New Board
-        </div>
+        {!boards.length ? null : (
+          <div className="text-lg font-semibold mb-5 leading-none">
+            Create New Board
+          </div>
+        )}
         <form
           className="flex flex-col gap-5 rounded-md h-fit"
           onSubmit={handleSubmit(onSubmit)}

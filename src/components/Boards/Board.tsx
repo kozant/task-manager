@@ -8,7 +8,8 @@ import { useBoardStore } from "../../store/useBoardStore";
 import ColumnList from "../Columns";
 import ColumnForm from "../ColumnForm";
 import Modal from "../common/Modal";
-import { Plus } from "lucide-react";
+import { Ellipsis, Plus } from "lucide-react";
+import Dropdown from "../common/Dropdown";
 
 type BoardProps = {
   board: BoardType;
@@ -29,6 +30,7 @@ export default function Board({ board }: BoardProps) {
   }, []);
 
   const updateBoard = useBoardStore((state) => state.updateBoard);
+  const deleteBoard = useBoardStore((state) => state.deleteBoard);
 
   const handleUpdateColumn = useCallback(
     (updatedColumn: ColumnType) => {
@@ -62,18 +64,51 @@ export default function Board({ board }: BoardProps) {
     [board, columns, updateBoard],
   );
 
+  const handleDeleteBoard = useCallback(() => {
+    deleteBoard(board.id);
+  }, [board.id, deleteBoard]);
+
+  const actions = [
+    // {
+    //   group: "list",
+    //   label: "Edit Board",
+    //   onSelect: handleOpenAddForm,
+    // },
+    {
+      group: "danger",
+      label: "Delete Board",
+      onSelect: handleDeleteBoard,
+      className: "text-red-600 hover:bg-red-600/10",
+    },
+  ];
+
   return (
     <div
       ref={boardContainerRef}
       className="bg-gray-200"
       style={{ height: "calc(100vh - 64px)" }}
     >
-      <div className="py-2 mb-4 bg-gray-300">
-        <h2 className="text-2xl font-bold pl-6 pr-4">{board.title}</h2>
+      <div className="flex justify-between items-center py-2 mb-4 bg-gray-300">
+        <h2 className="text-2xl font-bold pl-6">{board.title}</h2>
+        <div className="flex transition-opacity pr-3 opacity-100 pointer-events-auto">
+          <Dropdown
+            tooltipText="Actions"
+            items={actions}
+            handle={
+              <button
+                type="button"
+                className="p-2 cursor-pointer rounded-full outline-none"
+                onPointerDown={(event) => event.stopPropagation()}
+              >
+                <Ellipsis size={20} />
+              </button>
+            }
+          />
+        </div>
       </div>
       <div
         className="flex flex-col justify-between"
-        style={{ height: "calc(100% - 64px)" }}
+        style={{ height: "calc(100% - 68px)" }}
       >
         <ul className="flex flex-row h-full overflow-x-auto overflow-y-hidden px-4">
           <ColumnList

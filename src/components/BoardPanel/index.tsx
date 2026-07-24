@@ -18,6 +18,7 @@ export default function BoardPanel() {
   }, []);
 
   const createBoard = useBoardStore((state) => state.createBoard);
+  const boards = useBoardStore((state) => state.boards);
 
   const handleAddBoard: SubmitHandler<BoardType> = useCallback(
     (data) => {
@@ -32,7 +33,8 @@ export default function BoardPanel() {
       <div className="absolute bottom-7 w-full flex justify-center">
         <button
           type="button"
-          className="flex justify-center items-center gap-2 p-2 rounded-md bg-white hover:bg-black/10 cursor-pointer h-fit w-64 text-left"
+          className="flex justify-center items-center gap-2 p-2 rounded-md bg-white 
+          hover:bg-black/10 cursor-pointer h-fit w-64 text-left"
           style={{ color: "#202020", fontWeight: 500 }}
           onClick={handleOpenAddForm}
         >
@@ -40,7 +42,7 @@ export default function BoardPanel() {
         </button>
       </div>
       <Modal
-        title="Choose Board"
+        title={!!boards.length ? "Choose Board" : "Create New Board"}
         isOpen={isModalOpen}
         onChange={setIsModalOpen}
       >

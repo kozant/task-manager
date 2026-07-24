@@ -13,9 +13,17 @@ export default function BoardList({ boards }: BoardListProps) {
   return (
     <div className="grid grid-cols-1 gap-4">
       {boards.length === 0 || !activeBoard ? (
-        <p className="text-gray-600">
-          No boards available. Create a new board to get started!
-        </p>
+        <div
+          style={{ height: "calc(100vh - 64px)" }}
+          className="relative bg-gray-200"
+        >
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-gray-600">
+            <div className="text-center">No boards available.</div>
+            <div className="text-center">
+              Create a new board to get started!
+            </div>
+          </div>
+        </div>
       ) : (
         <div key={activeBoard?.id}>
           <Board board={activeBoard} />

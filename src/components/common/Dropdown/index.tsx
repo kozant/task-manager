@@ -44,6 +44,10 @@ const Dropdown = ({
         </DropdownMenu.Item>
       ));
 
+  const showSeparator =
+    items.some((item) => item.group === "list") &&
+    items.some((item) => item.group === "danger");
+
   return (
     <DropdownMenu.Root onOpenChange={onOpenChange}>
       <Tooltip text={tooltipText}>
@@ -62,7 +66,9 @@ const Dropdown = ({
           }}
         >
           {getDropdownItemsByGroup("list")}
-          <DropdownMenu.Separator className="m-2 h-px bg-black/10" />
+          {showSeparator && (
+            <DropdownMenu.Separator className="m-2 h-px bg-black/10" />
+          )}
           {getDropdownItemsByGroup("danger")}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
