@@ -46,10 +46,6 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
     onDelete(card.id);
   }, [onDelete, card.id]);
 
-  const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
   const handleOnMouseEnter = useCallback(() => {
     setIsHovered(true);
   }, []);
@@ -124,7 +120,6 @@ export default function Card({ card, onEdit, onDelete }: CardProps) {
           buttonText="Update Card"
           defaultValue={card}
           onSubmit={handleEdit}
-          onClose={handleCloseModal}
         />
       </Modal>
     </div>

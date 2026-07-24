@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type { Card as CardType } from "../../types/board";
-import { X } from "lucide-react";
 import SelectMenu from "../common/Select";
 import { PRIORITY_LEVELS } from "../../store/useBoardStore";
 
@@ -11,12 +10,10 @@ export default function CardForm({
   buttonText,
   defaultValue,
   onSubmit,
-  onClose,
 }: {
   buttonText: string;
   defaultValue?: CardType;
   onSubmit: SubmitHandler<CardType>;
-  onClose: () => void;
 }) {
   const defaultValues = useMemo(
     () => ({
@@ -91,13 +88,6 @@ export default function CardForm({
       <div className={FORM_STYLES.BUTTON_CONTAINER}>
         <button className={FORM_STYLES.SUBMIT_BUTTON} type="submit">
           {buttonText}
-        </button>
-        <button
-          className={FORM_STYLES.CANCEL_BUTTON}
-          type="button"
-          onClick={onClose}
-        >
-          <X color="rgb(80, 82, 88)" />
         </button>
       </div>
     </form>

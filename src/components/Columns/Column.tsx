@@ -189,11 +189,7 @@ export default function Column({
           <Plus size={17} /> <span>Add Card</span>
         </button>
         <Modal title="Add Card" isOpen={isModalOpen} onChange={setIsModalOpen}>
-          <CardForm
-            buttonText="Add Card"
-            onSubmit={handleAddCard}
-            onClose={handleCloseAddForm}
-          />
+          <CardForm buttonText="Add Card" onSubmit={handleAddCard} />
         </Modal>
       </div>
     </li>

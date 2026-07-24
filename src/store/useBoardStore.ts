@@ -137,18 +137,22 @@ const initialBoards: Board[] = [
 
 type BoardState = {
   boards: Board[];
+  activeBoardId: number | null;
   createBoard: (title?: string) => void;
   updateBoard: (board: Board) => void;
+  changeActiveBoard: (boardId: number) => void;
 };
 
 export const useBoardStore = create<BoardState>()(
   persist(
     (set, get) => ({
       boards: initialBoards,
+      activeBoardId: 1,
       createBoard: (title = `Board ${get().boards.length + 1}`) =>
         set((state) => ({
           boards: [...state.boards, { id: Date.now(), title, columns: [] }],
         })),
+      changeActiveBoard: (boardId) => set({ activeBoardId: boardId }),
       updateBoard: (updatedBoard) =>
         set((state) => ({
           boards: state.boards.map((board) =>

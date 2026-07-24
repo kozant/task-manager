@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import BoardList from "./components/Boards";
+import BoardPanel from "./components/BoardPanel";
 import { useCallback } from "react";
 import { useBoardStore } from "./store/useBoardStore";
 
@@ -15,6 +16,7 @@ function App() {
     <>
       <Header onAddBoard={addBoard} />
       <BoardList boards={boards} />
+      <BoardPanel />
     </>
   );
 }

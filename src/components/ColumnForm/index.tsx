@@ -1,16 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import type { Column as ColumnType } from "../../types/board";
-import { X } from "lucide-react";
 import { COLUMN_COLORS } from "../../store/useBoardStore";
 import { FORM_STYLES } from "../CardForm/form.styles";
 
 export default function ColumnForm({
   onSubmit,
-  onClose,
 }: {
   onSubmit: (column: ColumnType) => void;
-  onClose: () => void;
 }) {
   const defaultValues = useMemo(
     () => ({ title: "", color: COLUMN_COLORS[0] }),
@@ -76,13 +73,6 @@ export default function ColumnForm({
       <div className={FORM_STYLES.BUTTON_CONTAINER}>
         <button className={FORM_STYLES.SUBMIT_BUTTON} type="submit">
           Add Column
-        </button>
-        <button
-          className={FORM_STYLES.CANCEL_BUTTON}
-          type="button"
-          onClick={onClose}
-        >
-          <X color="rgb(80, 82, 88)" />
         </button>
       </div>
     </form>
